@@ -1,92 +1,71 @@
-const { User } = require('../models');
+const { User, Thought } = require('../models');
 
-const UserController = {
-  // Get all users
-  getAllUsers(req, res) {
-    User.find({})
-      .then(userData => res.json(userData))
-      .catch(err => res.status(500).json(err));
+module.exports = {
+  // Get all Users
+  async getUsers(req, res) {
+    try {
+      const users = await User.find();
+      res.json(users);
+    } catch (err) {
+      res.status(500).json(err);
+      console.log(err);
+    }
   },
+  // Get a User using their ID
+  async getSingleUser(req, res) {
+    try {
+      const user = await User.findOne({ _id: req.params.userId});
 
-  // Get single user by ID
-  getUserById(req, res) {
-    User.findById(req.params.userId)
-      .then(userData => res.json(userData))
-      .catch(err => res.status(500).json(err));
+      if (!user) {
+        return res.status(404).json({ message: 'No User with that id' });
+      }
+
+      res.json(user);
+    } catch (err) {
+      res.status(500).json(err);
+    }
   },
-  
-  // Create a user
-  createUser(req, res) {
-    User.create(req.body)
-      .then(userData => res.json(userData))
-      .catch(err => res.status(500).json(err));
+  // Create a User
+  async createUser(req, res) {
+    try {
+      const user = await User.create(req.body);
+      res.json(user);
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json(err);
+    }
   },
+  // Delete a user
+  async deleteUser(req, res) {
+    try {
+      const user = await User.findOneAndDelete({ _id: req.params.userId });
 
-  // Update user by ID
-  updateUserById(req, res) {
-    User.findOneAndUpdate(req.params.id, req.body, { new: true })
-      .then(userData => {
-        if (!userData) {
-          return res.status(404).json({ message: 'User not found' });
-        }
-        res.json(userData);
-      })
-      .catch(err => res.status(500).json(err));
+      if (!user) {
+        res.status(404).json({ message: 'No user with that id' });
+      }
+
+      await Thought.deleteMany({ _id: { $in: user.thoughts } });
+      res.json({ message: 'User and Thoughts deleted!' });
+    } catch (err) {
+      res.status(500).json(err);
+    }
   },
+  // Update a User
+  async updateUser(req, res) {
+    try {
+      const user = await User.findOneAndUpdate(
+        { _id: req.params.userId },
+        { $set: req.body },
+        { runValidators: true, new: true }
+      );
 
-  // Delete user
-  deleteUserById(req, res) {
-    User.findOneAndDelete(req.params.id)
-      .then(userData => {
-        if (!userData) {
-          return res.status(404).json({ message: 'User not found' });
-        }
-        res.json({ message: 'User deleted successfully' });
-      })
-      .catch(err => res.status(500).json(err));
-  },
+      if (!user) {
+        res.status(404).json({ message: 'No user with this id' });
+      }
 
-  // Add friend to user's friend list
-  addFriend(req, res) {
-    User.findOneAndUpdate(
-      { _id: req.params.userId },
-      { $addToSet: { friends: req.body.friendId || req.params.friendId} },
-      { new: true }
-    )
-      .then(userData => {
-        if (!userData) {
-          return res.status(404).json({ message: 'User not found' });
-        }
-        res.json(userData);
-      })
-      .catch(err => res.status(500).json(err));
-  },
-
-
-  // Remove friend from user's friend list
-  removeFriend({ params }, res) {
-    User.findOneAndUpdate(
-      { _id: params.userId },
-      { $pull: { friends: params.friendId } },
-      { new: true }
-    )
-      .then((dbUserData) => {
-        if (!dbUserData) {
-          return res.status(404).json({ message: "No user with this id!" });
-        }
-        // check if friend was removed
-        const removed = !dbUserData.friends.includes(params.friendId);
-        // return response with appropriate message
-        if (removed) {
-          res.json({ message: "Friend removed successfully!", dbUserData });
-        } else {
-          res.json(dbUserData);
-        }
-      })
-      .catch((err) => res.status(400).json(err));
+      res.json(user);
+    } catch (err) {
+      res.status(500).json(err);
+    }
   },
 };
-
-
-// Export UserController
-module.exports = UserController;
