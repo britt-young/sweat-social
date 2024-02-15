@@ -1,10 +1,8 @@
-// Main router for the application that takes all requests to the appropriate route
-const router = require('express').Router(); 
-const apiRoutes = require('./apiRoutes');
-router.use('/api',apiRoutes);
-router.use((req, res)=>{
-    return res.status(404).send('Not found');
+const router = require('express').Router();
+const userRoutes = require('./apiRoutes/userRoutes');
+const thoughtRoutes = require('./apiRoutes/thoughtRoutes');
 
-});
+router.use('/users', userRoutes);
+router.use('/thoughts', thoughtRoutes);
 
 module.exports = router;

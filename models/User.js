@@ -6,47 +6,46 @@ const userSchema = new Schema(
   {
     username: {
         type: String,
-        required: true,
         unique: true,
-        trim: true,
+        required: true,
+        trim: true
     },
-      // Using regular expression to validate email format
     email: {
         type: String,
-        required: true,
+        required:true,
         unique: true,
-        validate: { 
-          validator: function(v) {
-              return /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/.test(v);
-          }
-      }
+        validate: {
+        validator: function (value) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+        },
+        message: 'Invalid email address format',
+        },
     },
-
-    friends:[
-      {
+    thoughts: [
+        {
         type: Schema.Types.ObjectId,
-        ref: 'User',
-    }
-  ],
-    thoughts:[
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Thought',
-    }
-  ],
-  },
-  {
+        ref: 'thought',
+        },
+    ],
+    friends: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'user'
+        }
+    ]
+    },
+    {
     toJSON: {
-      virtuals: true,
+        virtuals: true,
     },
-    id: false,
-}
+    id: false
+    }
 );
 
 // Defines a virtual property 'friendCount' which returns the number of friends in the friends array
-userSchema.virtual('friendCount').get(function(){
+/* userSchema.virtual('friendCount').get(function(){
     return this.friends.length;
-});
+}); */
 // Creating the User model from the userSchema
 const User = model('User',userSchema)
 

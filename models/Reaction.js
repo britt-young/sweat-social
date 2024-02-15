@@ -19,15 +19,19 @@ const reactionSchema = new Schema(
     createdAt: {
       type: Date,
       default: Date.now,
-      get: timestamp => new Date(timestamp).toLocaleDateString()
+      get: (date) => {
+          return date.toISOString();
+      }
     },
   },
   {
+    timestamps: true,
     toJSON: {
-      getters: true,
+        getters: true,
+        virtuals: true,
     },
     id: false,
-  }
+    }
 );
 
 module.exports = reactionSchema

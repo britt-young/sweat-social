@@ -4,31 +4,34 @@ const reactionSchema = require('./Reaction');
 // Define the Thought schema with the required fields and their respective data types
 const thoughtSchema = new Schema(
     {
-        thoughtText:{
+        thoughtText: {
             type: String,
             required: true,
+            maxlength: 280,
             minlength: 1,
-            maxlenght: 280,
         },
-        createdAt:{
+        createdAt: {
             type: Date,
             default: Date.now,
-            get: timestamp => new Date(timestamp).toLocaleString(),
+            get: (date) => {
+                return date.toISOString();
+            }
         },
-        username:{
-            type: String,  
-            required: true,
+        username: {
+            type: String,
+            required: true
         },
-        reactions:[reactionSchema],
-    },
-    {
+        reactions: [reactionSchema]
+        },
+        {
+        timestamps: true,
         toJSON: {
             getters: true,
             virtuals: true,
         },
         id: false,
-    }
-);
+        }
+    );
 
 // Defines a virtual property 'reactionCount' which returns the number of reactions in the reactions array
 thoughtSchema.virtual('reactionCount').get(function(){
