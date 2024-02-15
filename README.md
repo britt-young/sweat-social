@@ -1,6 +1,8 @@
 # sweat-social
 
-##Description
+Intended to be used in conjunction with a front-end developed app that allows gym-users to find and meet up with fellow users and create a community of friends that enjoy fitness/health
+
+## Description
 NoSQL database API built to handle large amounts of unstructured data using Express.js, MongoDB, Mongoose ODM, and JavaScript's built-in object library.
 
 AS A social media startup
