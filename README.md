@@ -45,5 +45,7 @@ e.g.
 
 
 ![Demo](img/sweat-social-demo.gif)
-    
+
+## Tests
+Note: Additional testing/refactoring required
 
