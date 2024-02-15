@@ -1,6 +1,6 @@
 # sweat-social
 
-Intended to be used in conjunction with a front-end developed app that allows gym-users to find and meet up with fellow users and create a community of friends that enjoy fitness/health
+Intended to be used in conjunction with a front-end developed app that allows gym users to find and meet up with fellow users and create a community of friends who enjoy fitness/health
 
 ## Description
 NoSQL database API built to handle large amounts of unstructured data using Express.js, MongoDB, Mongoose ODM, and JavaScript's built-in object library.
@@ -27,7 +27,7 @@ Users will need to install:
 ## Usage
 
 - Clone git repository
-- Run ```npm install``` and update the ```.env``` file
+- Run ```npm install```, ```npm run seed```, and ```npm run start```
 - Start the server and use a tool for testing API endpoints (I recommend [Insomnia](https://insomnia.rest/download))
 - Test the following endpoints:
   - GET routes to return all users and all thoughts
@@ -37,9 +37,11 @@ Users will need to install:
   - POST and DELETE routes for a user’s friend list
   - POST and DELETE routes for reactions to thoughts
 
+e.g.
+[demo-MongoDB](img/mongoDB-demo.png)
+[demo-insomnia](img/insomnia-demo.png)
 
-
-    ```md
-    ![alt text](assets/images/screenshot.png)
-    ```
+    
+    ![Demo](img/sweat-social-demo.gif)
+    
 
