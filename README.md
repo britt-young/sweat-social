@@ -38,10 +38,12 @@ Users will need to install:
   - POST and DELETE routes for reactions to thoughts
 
 e.g.
-[demo-MongoDB](img/mongoDB-demo.png)
-[demo-insomnia](img/insomnia-demo.png)
+![demo-MongoDB](img/mongoDB-demo.png)
 
-    
-    ![Demo](img/sweat-social-demo.gif)
+
+![demo-insomnia](img/insomnia-demo.png)
+
+
+![Demo](img/sweat-social-demo.gif)
     
 
